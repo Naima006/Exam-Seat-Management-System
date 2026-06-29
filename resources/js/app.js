@@ -116,25 +116,26 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ============================================================
        LOADING BUTTONS
     ============================================================ */
+    
+    document.querySelectorAll('form').forEach(form => {
 
-    document.querySelectorAll('.loading-btn').forEach(button => {
+        form.addEventListener('submit', function () {
 
-        button.addEventListener('click', () => {
+            const button = form.querySelector('.loading-btn');
+
+            if (!button) return;
 
             button.disabled = true;
 
-            const originalText = button.innerHTML;
-
-            button.dataset.original = originalText;
-
             button.innerHTML = `
-                <span class="animate-spin">⏳</span>
+                <span class="animate-spin mr-2">⏳</span>
                 Processing...
             `;
 
         });
 
     });
+
 
     /* ============================================================
        DELETE CONFIRMATION
