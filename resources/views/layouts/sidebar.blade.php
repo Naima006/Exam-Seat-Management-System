@@ -120,25 +120,25 @@
 
             </a>
 
-            <a href="#"
-                class="sidebar-link">
+            <a href="{{ route('rooms.index') }}"
+    class="sidebar-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg"
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24">
 
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 7V3h8v4m4 0H4v14h16V7z"/>
+        <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 7V3h8v4m4 0H4v14h16V7z"/>
 
-                </svg>
+    </svg>
 
-                Rooms
+    Rooms
 
-            </a>
+</a>
 
             <a href="#"
                 class="sidebar-link">
