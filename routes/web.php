@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\RoomController;
 
 // Redirect the home page to the login page
 Route::redirect('/', '/login');
@@ -16,17 +17,28 @@ Route::get('/dashboard', function () {
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
 
-    // ==========================
-    // Profile
-    // ==========================
+    /*
+    |--------------------------------------------------------------------------
+    | Profile Management
+    |--------------------------------------------------------------------------
+    */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // ==========================
-    // Department Management
-    // ==========================
+    /*
+    |--------------------------------------------------------------------------
+    | Department Management
+    |--------------------------------------------------------------------------
+    */
     Route::resource('departments', DepartmentController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Room Management
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('rooms', RoomController::class);
 
 });
 

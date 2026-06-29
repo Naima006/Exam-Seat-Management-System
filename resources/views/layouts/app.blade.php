@@ -94,20 +94,26 @@
 
         </main>
 
-        {{-- Footer --}}
+                {{-- Footer --}}
         <footer
             class="px-6 py-5 text-center text-sm text-slate-400 border-t border-white/10">
 
             © <span id="currentYear"></span>
-
             Exam Seat Management System
-
             • Developed by Team ESMS
 
         </footer>
 
     </div>
 
+    {{-- SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Page Specific Scripts --}}
+    @stack('scripts')
+
+</body>
+</html>
 </body>
 
 </html>
