@@ -100,8 +100,7 @@
 
             </a>
 
-            <a href="#"
-                class="sidebar-link">
+            <a href="#" class="sidebar-link">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="w-5 h-5"
@@ -109,10 +108,11 @@
                     stroke="currentColor"
                     viewBox="0 0 24 24">
 
+                    <!-- Graduation Cap Path -->
                     <path stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="2"
-                        d="M16 14a4 4 0 10-8 0m8 0v1a4 4 0 11-8 0v-1m8 0H8"/>
+                        d="M12 14l9-5-9-5-9 5 9 5zm0 0v6m4.5-2.5v1.8c0 .8-.7 1.4-1.5 1.4H9c-.8 0-1.5-.6-1.5-1.4v-1.8"/>
 
                 </svg>
 

@@ -147,11 +147,11 @@
 
                 <div
                     id="profileMenu"
-                    class="hidden absolute right-0 mt-3 w-56 card p-2">
+                    class="hidden absolute right-0 mt-3 w-56 rounded-2xl border border-white/10 bg-slate-900/95 backdrop-blur-xl shadow-2xl p-2">
 
                     <a
                         href="{{ route('profile.edit') }}"
-                        class="block px-4 py-3 rounded-xl hover:bg-white/10 transition">
+                        class="block px-4 py-3 rounded-xl hover:bg-blue-500/20 hover:text-blue-300 transition duration-200">
 
                         Profile
 
