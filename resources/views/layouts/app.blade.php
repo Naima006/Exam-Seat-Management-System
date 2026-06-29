@@ -106,14 +106,10 @@
 
     </div>
 
-    {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    {{-- Page Specific Scripts --}}
+    
     @stack('scripts')
-
-</body>
-</html>
+    
 </body>
 
 </html>

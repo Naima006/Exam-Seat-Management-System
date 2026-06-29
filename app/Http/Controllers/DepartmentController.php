@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDepartmentRequest;
+use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
 use Illuminate\Http\Request;
 
@@ -14,21 +16,53 @@ class DepartmentController extends Controller
     {
         $search = $request->search;
 
-        $departments = Department::when($search, function ($query) use ($search) {
+        $departments = Department::query()
 
-                $query->where('department_name', 'like', "%{$search}%")
-                      ->orWhere('department_code', 'like', "%{$search}%");
+            ->when($search, function ($query) use ($search) {
+
+                $query->where(function ($q) use ($search) {
+
+                    $q->where('department_name', 'LIKE', "%{$search}%")
+                      ->orWhere('department_code', 'LIKE', "%{$search}%");
+
+                });
 
             })
+
             ->latest()
+
             ->paginate(10)
+
             ->withQueryString();
 
-        return view('departments.index', compact('departments', 'search'));
+        // Dashboard Statistics
+        $statistics = [
+
+            // Total departments
+            'totalDepartments' => Department::count(),
+
+            // Departments added today
+            'departmentsAddedToday' => Department::whereDate(
+                'created_at',
+                today()
+            )->count(),
+
+            // Latest department
+            'latestDepartment' => Department::latest()->first(),
+
+        ];
+
+        return view(
+            'departments.index',
+            array_merge(
+                compact('departments'),
+                $statistics
+            )
+        );
     }
 
     /**
-     * Show the form for creating a new department.
+     * Show create form.
      */
     public function create()
     {
@@ -36,27 +70,27 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Store a newly created department.
+     * Store new department.
      */
-    public function store(Request $request)
+    public function store(StoreDepartmentRequest $request)
     {
-        $validated = $request->validate([
-
-            'department_name' => 'required|string|max:100',
-
-            'department_code' => 'required|string|max:20|unique:departments,department_code',
-
-        ]);
-
-        Department::create($validated);
+        Department::create($request->validated());
 
         return redirect()
             ->route('departments.index')
-            ->with('success', 'Department created successfully.');
+            ->with('success', 'Department has been added successfully.');
     }
 
     /**
-     * Show the form for editing the specified department.
+     * Display department details.
+     */
+    public function show(Department $department)
+    {
+        return view('departments.show', compact('department'));
+    }
+
+    /**
+     * Show edit form.
      */
     public function edit(Department $department)
     {
@@ -64,19 +98,13 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Update the specified department.
+     * Update department.
      */
-    public function update(Request $request, Department $department)
-    {
-        $validated = $request->validate([
-
-            'department_name' => 'required|string|max:100',
-
-            'department_code' => 'required|string|max:20|unique:departments,department_code,' . $department->id,
-
-        ]);
-
-        $department->update($validated);
+    public function update(
+        UpdateDepartmentRequest $request,
+        Department $department
+    ) {
+        $department->update($request->validated());
 
         return redirect()
             ->route('departments.index')
@@ -84,7 +112,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Remove the specified department.
+     * Delete department.
      */
     public function destroy(Department $department)
     {

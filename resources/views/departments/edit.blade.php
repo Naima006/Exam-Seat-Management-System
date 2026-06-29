@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Department')
+@section('title', 'Edit Department')
 
 @section('content')
 
@@ -15,13 +15,13 @@
 
                 <h1 class="text-3xl font-bold">
 
-                    Add Department
+                    Edit Department
 
                 </h1>
 
                 <p class="text-slate-400 mt-2">
 
-                    Create a new department for the examination system.
+                    Update department information.
 
                 </p>
 
@@ -67,10 +67,12 @@
         @endif
 
         <form
-            action="{{ route('departments.store') }}"
+            action="{{ route('departments.update', $department) }}"
             method="POST">
 
             @csrf
+
+            @method('PUT')
 
             @include('departments._form')
 
