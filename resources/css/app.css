@@ -115,7 +115,7 @@ a{
 
     border:1px solid var(--glass-border);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter: blur(22px);
 
     -webkit-backdrop-filter:blur(18px);
 
@@ -161,7 +161,7 @@ a{
 
     font-weight:600;
 
-    transition:.25s;
+    transition: all .25s ease;
 
     cursor:pointer;
 
@@ -234,6 +234,8 @@ a{
     width:100%;
 
     padding:.85rem 1rem;
+
+    padding-left:3rem;
 
     background:rgba(255,255,255,.05);
 
