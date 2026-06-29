@@ -1,18 +1,33 @@
-<aside id="sidebar"
-    class="sidebar glass flex flex-col justify-between">
+<aside
+    id="sidebar"
+    class="sidebar fixed inset-y-0 left-0 z-50 w-72 -translate-x-full lg:translate-x-0 transition-transform duration-300">
 
-    <div>
+    <div class="card h-full flex flex-col mx-4 my-4 p-6">
 
-        {{-- Logo --}}
+        <!-- Mobile Close -->
+        <div class="flex justify-end lg:hidden mb-2">
+
+            <button
+                id="sidebarClose"
+                class="text-slate-300 hover:text-white text-2xl">
+
+                &times;
+
+            </button>
+
+        </div>
+
+        <!-- Logo -->
+
         <div class="mb-10">
 
-            <h1 class="text-2xl font-bold tracking-wide text-white">
+            <h1 class="text-2xl font-bold tracking-wide">
 
-                🎓 ExamSeat
+                ExamSeat
 
             </h1>
 
-            <p class="text-sm text-slate-400 mt-1">
+            <p class="text-slate-400 text-sm mt-1">
 
                 Management System
 
@@ -20,123 +35,194 @@
 
         </div>
 
-        {{-- Navigation --}}
-        <nav class="space-y-2">
+        <!-- Navigation -->
+
+        <nav class="flex-1 space-y-2">
+
+            {{-- Dashboard --}}
 
             <a href="{{ route('dashboard') }}"
                 class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
 
-                <span>🏠</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
 
-                <span>Dashboard</span>
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 12l9-9 9 9M4 10v10h16V10"/>
 
-            </a>
+                </svg>
 
-            <a href="#"
-                class="sidebar-link {{ request()->routeIs('departments.*') ? 'active' : '' }}">  //href="{{ route('departments.index') }}"
-
-                <span>🏢</span>
-
-                <span>Departments</span>
-
-            </a>
-
-            <a href="#"
-                class="sidebar-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">  //href="{{ route('courses.index') }}"
-
-                <span>📚</span>
-
-                <span>Courses</span>
+                Dashboard
 
             </a>
 
             <a href="#"
-                class="sidebar-link {{ request()->routeIs('students.*') ? 'active' : '' }}">
+                class="sidebar-link">
 
-                <span>🎓</span>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
 
-                <span>Students</span>
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 7h18M3 12h18M3 17h18"/>
 
-            </a>
+                </svg>
 
-            <a href="#"
-                class="sidebar-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}">
-
-                <span>🏫</span>
-
-                <span>Rooms</span>
-
-            </a>
-
-            <a href="#"
-                class="sidebar-link {{ request()->routeIs('invigilators.*') ? 'active' : '' }}">  //href="{{ route('invigilators.index') }}"
-
-                <span>👨‍🏫</span>
-
-                <span>Invigilators</span>
+                Departments
 
             </a>
 
             <a href="#"
-                class="sidebar-link {{ request()->routeIs('exams.*') ? 'active' : '' }}"> //href="{{ route('exams.index') }}"
+                class="sidebar-link">
 
-                <span>📝</span>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
 
-                <span>Exams</span>
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v12M6 12h12"/>
+
+                </svg>
+
+                Courses
 
             </a>
 
             <a href="#"
-                class="sidebar-link {{ request()->routeIs('seat-allocations.*') ? 'active' : '' }}"> //href="{{ route('seat-allocations.index') }}"
+                class="sidebar-link">
 
-                <span>💺</span>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
 
-                <span>Seat Allocation</span>
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 14a4 4 0 10-8 0m8 0v1a4 4 0 11-8 0v-1m8 0H8"/>
+
+                </svg>
+
+                Students
 
             </a>
 
             <a href="#"
-                class="sidebar-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                class="sidebar-link">
 
-                <span>📊</span>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
 
-                <span>Reports</span>
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3h8v4m4 0H4v14h16V7z"/>
+
+                </svg>
+
+                Rooms
+
+            </a>
+
+            <a href="#"
+                class="sidebar-link">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.33 0-6 2.67-6 6h12c0-3.33-2.67-6-6-6z"/>
+
+                </svg>
+
+                Invigilators
+
+            </a>
+
+            <a href="#"
+                class="sidebar-link">
+
+                📝 Exams
+
+            </a>
+
+            <a href="#"
+                class="sidebar-link">
+
+                💺 Seat Allocation
+
+            </a>
+
+            <a href="#"
+                class="sidebar-link">
+
+                📊 Reports
 
             </a>
 
         </nav>
 
-    </div>
+        <!-- Bottom -->
 
-    {{-- Bottom --}}
+        <div class="pt-6 mt-6 border-t border-white/10">
 
-    <div class="pt-6 border-t border-white/10">
+            <p class="text-xs text-slate-400">
 
-        <div class="text-sm text-slate-400 mb-3">
+                Logged in as
 
-            Logged in as
+            </p>
+
+            <h4 class="font-semibold mt-1">
+
+                {{ Auth::user()->name }}
+
+            </h4>
+
+            <form
+                method="POST"
+                action="{{ route('logout') }}"
+                class="mt-5">
+
+                @csrf
+
+                <button
+                    type="submit"
+                    class="btn btn-danger w-full">
+
+                    Logout
+
+                </button>
+
+            </form>
 
         </div>
-
-        <div class="font-semibold text-white mb-5">
-
-            {{ Auth::user()->name }}
-
-        </div>
-
-        <form method="POST" action="{{ route('logout') }}">
-
-            @csrf
-
-            <button
-                class="btn btn-danger w-full">
-
-                Logout
-
-            </button>
-
-        </form>
 
     </div>
 
 </aside>
+
+<div
+    id="sidebarOverlay"
+    class="fixed inset-0 bg-black/50 hidden z-40 lg:hidden">
+</div>
