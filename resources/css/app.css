@@ -1,3 +1,529 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* ===========================
+   THEME
+=========================== */
+
+@theme {
+    --color-bg: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-primary: #3b82f6;
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+
+    --color-text: #f8fafc;
+    --color-text-muted: #94a3b8;
+
+    --glass-bg: rgba(255, 255, 255, .08);
+    --glass-border: rgba(255, 255, 255, .10);
+}
+
+/* ===========================
+   BASE
+=========================== */
+
+@layer base {
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+
+        background:
+            radial-gradient(circle at top left, #1e3a8a 0%, transparent 35%),
+            radial-gradient(circle at bottom right, #0f766e 0%, transparent 35%),
+            linear-gradient(135deg, #0f172a, #111827);
+
+        min-height: 100vh;
+
+        color: #f8fafc;
+
+        font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            sans-serif;
+    }
+
+    * {
+
+        scrollbar-width: thin;
+        scrollbar-color: #3b82f6 transparent;
+
+    }
+
+}
+
+/* ===========================
+   GLASS CARD
+=========================== */
+
+@layer components {
+
+    .glass {
+
+        background: rgba(255, 255, 255, .08);
+
+        backdrop-filter: blur(18px);
+
+        -webkit-backdrop-filter: blur(18px);
+
+        border: 1px solid rgba(255, 255, 255, .10);
+
+        border-radius: 24px;
+
+        box-shadow:
+
+            0 8px 32px rgba(0, 0, 0, .25);
+
+    }
+
+    /* ===========================
+   PAGE CONTAINER
+=========================== */
+
+    .page {
+
+        padding: 2rem;
+
+    }
+
+    /* ===========================
+   PAGE TITLE
+=========================== */
+
+    .page-title {
+
+        font-size: 2rem;
+
+        font-weight: 700;
+
+        letter-spacing: .5px;
+
+        margin-bottom: .3rem;
+
+    }
+
+    .page-subtitle {
+
+        color: #94a3b8;
+
+        margin-bottom: 2rem;
+
+    }
+
+    /* ===========================
+   BUTTONS
+=========================== */
+
+    .btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: .5rem;
+
+        padding: .7rem 1.2rem;
+
+        border-radius: 16px;
+
+        font-weight: 600;
+
+        transition: .3s;
+
+        cursor: pointer;
+
+    }
+
+    .btn-primary {
+
+        background: #3b82f6;
+
+        color: white;
+
+    }
+
+    .btn-primary:hover {
+
+        background: #2563eb;
+
+        transform: translateY(-2px);
+
+    }
+
+    .btn-success {
+
+        background: #22c55e;
+
+        color: white;
+
+    }
+
+    .btn-success:hover {
+
+        background: #16a34a;
+
+        transform: translateY(-2px);
+
+    }
+
+    .btn-danger {
+
+        background: #ef4444;
+
+        color: white;
+
+    }
+
+    .btn-danger:hover {
+
+        background: #dc2626;
+
+        transform: translateY(-2px);
+
+    }
+
+    /* ===========================
+   INPUTS
+=========================== */
+
+    .input {
+
+        width: 100%;
+
+        padding: .8rem 1rem;
+
+        border-radius: 14px;
+
+        background: rgba(255, 255, 255, .06);
+
+        border: 1px solid rgba(255, 255, 255, .12);
+
+        color: white;
+
+        transition: .25s;
+
+    }
+
+    .input::placeholder {
+
+        color: #94a3b8;
+
+    }
+
+    .input:focus {
+
+        outline: none;
+
+        border-color: #3b82f6;
+
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, .25);
+
+    }
+
+    /* ===========================
+   LABEL
+=========================== */
+
+    .label {
+
+        display: block;
+
+        margin-bottom: .45rem;
+
+        font-weight: 600;
+
+    }
+
+    /* ===========================
+   TABLE
+=========================== */
+
+    .table-wrapper {
+
+        overflow-x: auto;
+
+    }
+
+    .table {
+
+        width: 100%;
+
+        border-collapse: collapse;
+
+    }
+
+    .table thead {
+
+        background: rgba(255, 255, 255, .08);
+
+    }
+
+    .table th {
+
+        padding: 1rem;
+
+        text-align: left;
+
+        font-weight: 700;
+
+        color: #f8fafc;
+
+    }
+
+    .table td {
+
+        padding: 1rem;
+
+        border-top: 1px solid rgba(255, 255, 255, .08);
+
+    }
+
+    .table tbody tr {
+
+        transition: .25s;
+
+    }
+
+    .table tbody tr:hover {
+
+        background: rgba(255, 255, 255, .05);
+
+    }
+
+    /* ===========================
+   DASHBOARD CARD
+=========================== */
+
+    .stat-card {
+
+        padding: 1.5rem;
+
+        transition: .3s;
+
+    }
+
+    .stat-card:hover {
+
+        transform: translateY(-5px);
+
+    }
+
+    .stat-title {
+
+        font-size: .9rem;
+
+        color: #94a3b8;
+
+    }
+
+    .stat-value {
+
+        font-size: 2rem;
+
+        font-weight: 700;
+
+        margin-top: .5rem;
+
+    }
+
+    /* ===========================
+   SIDEBAR
+=========================== */
+
+    .sidebar {
+
+        width: 260px;
+
+        min-height: 100vh;
+
+        position: fixed;
+
+        left: 0;
+
+        top: 0;
+
+        padding: 1.5rem;
+
+    }
+
+    .sidebar-link {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: .8rem;
+
+        padding: .9rem 1rem;
+
+        margin-bottom: .5rem;
+
+        border-radius: 14px;
+
+        transition: .3s;
+
+        color: #cbd5e1;
+
+        font-weight: 500;
+
+    }
+
+    .sidebar-link:hover {
+
+        background: rgba(255, 255, 255, .08);
+
+        color: white;
+
+    }
+
+    .sidebar-link.active {
+
+        background: #3b82f6;
+
+        color: white;
+
+    }
+
+    /* ===========================
+   MAIN CONTENT
+=========================== */
+
+    .main {
+
+        margin-left: 280px;
+
+        padding: 2rem;
+
+    }
+
+    /* ===========================
+   TOPBAR
+=========================== */
+
+    .topbar {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-bottom: 2rem;
+
+    }
+
+    /* ===========================
+   GRID
+=========================== */
+
+    .stats-grid {
+
+        display: grid;
+
+        grid-template-columns:
+
+            repeat(auto-fit, minmax(220px, 1fr));
+
+        gap: 1.3rem;
+
+    }
+
+    /* ===========================
+   CONTENT GRID
+=========================== */
+
+    .content-grid {
+
+        display: grid;
+
+        grid-template-columns:
+
+            2fr 1fr;
+
+        gap: 1.5rem;
+
+        margin-top: 1.5rem;
+
+    }
+
+    /* ===========================
+   ANIMATION
+=========================== */
+
+    .fade-up {
+
+        animation: fadeUp .6s ease;
+
+    }
+
+    @keyframes fadeUp {
+
+        from {
+
+            opacity: 0;
+
+            transform: translateY(20px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform: none;
+
+        }
+
+    }
+
+    /* ===========================
+   MOBILE
+=========================== */
+
+    @media(max-width:1024px) {
+
+        .sidebar {
+
+            transform: translateX(-100%);
+
+            transition: .35s;
+
+            z-index: 100;
+
+        }
+
+        .sidebar.show {
+
+            transform: translateX(0);
+
+        }
+
+        .main {
+
+            margin-left: 0;
+
+            padding: 1rem;
+
+        }
+
+        .content-grid {
+
+            grid-template-columns: 1fr;
+
+        }
+
+        .page {
+
+            padding: 1rem;
+
+        }
+
+    }
+
+}
