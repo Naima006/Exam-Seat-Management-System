@@ -60,8 +60,8 @@
 
             </a>
 
-            <a href="#"
-                class="sidebar-link">
+            <a href="{{ route('departments.index') }}"
+            class="sidebar-link {{ request()->routeIs('departments.*') ? 'active' : '' }}">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="w-5 h-5"
