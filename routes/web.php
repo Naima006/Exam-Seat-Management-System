@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RoomController;
 
 // Redirect the home page to the login page
@@ -32,6 +33,13 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::resource('departments', DepartmentController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Course Management
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('courses', CourseController::class);
 
     /*
     |--------------------------------------------------------------------------

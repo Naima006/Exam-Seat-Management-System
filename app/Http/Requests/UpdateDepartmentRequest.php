@@ -21,30 +21,20 @@ class UpdateDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'department_name' => [
-
                 'required',
-
                 'string',
-
                 'max:100',
-
+                Rule::unique('departments', 'department_name')
+                    ->ignore($this->department),
             ],
-
             'department_code' => [
-
                 'required',
-
                 'string',
-
                 'max:20',
-
                 Rule::unique('departments', 'department_code')
                     ->ignore($this->department),
-
             ],
-
         ];
     }
 
@@ -56,6 +46,8 @@ class UpdateDepartmentRequest extends FormRequest
         return [
 
             'department_name.required' => 'Department name is required.',
+
+            'department_name.unique'   => 'This department name already exists.',
 
             'department_code.required' => 'Department code is required.',
 

@@ -159,10 +159,6 @@
 
                         <th class="text-center w-28">Actions</th>
 
-                            Actions
-
-                        </th>
-
                     </tr>
 
                 </thead>
@@ -209,7 +205,6 @@
                                     {{-- Delete Button - Red Warning colored by default --}}
                                     <form action="{{ route('departments.destroy', $department) }}"
                                         method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this department? This action cannot be undone.');"
                                         class="delete-form inline">
                                         @csrf
                                         @method('DELETE')

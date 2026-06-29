@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDepartmentRequest extends FormRequest
+class StoreCourseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized.
@@ -21,28 +21,28 @@ class StoreDepartmentRequest extends FormRequest
     {
         return [
 
-            'department_name' => [
-
+            'department_id' => [
                 'required',
-
-                'string',
-
-                'max:100',
-
-                'unique:departments,department_name',
-
+                'exists:departments,id',
             ],
 
-            'department_code' => [
-
+            'course_name' => [
                 'required',
-
                 'string',
+                'max:150',
+            ],
 
+            'course_code' => [
+                'required',
+                'string',
                 'max:20',
+                'unique:courses,course_code',
+            ],
 
-                'unique:departments,department_code',
-
+            'semester' => [
+                'required',
+                'integer',
+                'between:1,12',
             ],
 
         ];
