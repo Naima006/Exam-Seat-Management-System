@@ -1,36 +1,113 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <meta charset="utf-8">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>
+        @yield('title', 'Dashboard') | Exam Seat Management System
+    </title>
+
+    @vite([
+        'resources/css/app.css',
+        'resources/js/app.js'
+    ])
+
+</head>
+
+<body class="text-white">
+
+    {{-- Sidebar --}}
+    @include('layouts.sidebar')
+
+    {{-- Main Content --}}
+    <div class="lg:ml-72 min-h-screen flex flex-col">
+
+        {{-- Top Navigation --}}
+        @include('layouts.navigation')
+
+        {{-- Flash Messages --}}
+        <div class="px-4 pt-4">
+
+            @if(session('success'))
+
+                <div
+                    class="auto-dismiss card border border-green-500/30 bg-green-500/10 px-5 py-4 mb-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <span class="text-green-400 text-xl">
+
+                            ✓
+
+                        </span>
+
+                        <span>
+
+                            {{ session('success') }}
+
+                        </span>
+
                     </div>
-                </header>
-            @endisset
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                </div>
+
+            @endif
+
+            @if(session('error'))
+
+                <div
+                    class="auto-dismiss card border border-red-500/30 bg-red-500/10 px-5 py-4 mb-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <span class="text-red-400 text-xl">
+
+                            ⚠
+
+                        </span>
+
+                        <span>
+
+                            {{ session('error') }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            @endif
+
         </div>
-    </body>
+
+        {{-- Page Content --}}
+        <main
+            class="flex-1 px-4 pb-6 fade-up">
+
+            @yield('content')
+
+        </main>
+
+        {{-- Footer --}}
+        <footer
+            class="px-6 py-5 text-center text-sm text-slate-400 border-t border-white/10">
+
+            © <span id="currentYear"></span>
+
+            Exam Seat Management System
+
+            • Developed by Team ESMS
+
+        </footer>
+
+    </div>
+
+</body>
+
 </html>
