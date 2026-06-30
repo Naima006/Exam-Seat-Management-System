@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\ImportStudentRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Course;
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
     /**
-     * Display a listing of students.
+     * Display students.
      */
     public function index(Request $request)
     {
@@ -49,28 +51,21 @@ class StudentController extends Controller
 
             ->withQueryString();
 
-        // AJAX request → return only table rows
         if ($request->ajax()) {
 
             return view('students.partials.table', compact('students'))->render();
 
         }
 
-        $statistics = [
+        return view('students.index', [
+
+            'students' => $students,
 
             'totalStudents' => Student::count(),
 
             'latestStudent' => Student::latest()->first(),
 
-        ];
-
-        return view(
-            'students.index',
-            array_merge(
-                compact('students'),
-                $statistics
-            )
-        );
+        ]);
     }
 
     /**
@@ -78,33 +73,112 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $departments = Department::orderBy('department_name')->get();
+        return view('students.create', [
 
-        $courses = Course::orderBy('course_name')->get();
+            'departments' => Department::orderBy('department_name')->get(),
 
-        return view(
-            'students.create',
-            compact(
-                'departments',
-                'courses'
-            )
-        );
+            'courses' => Course::orderBy('course_name')->get(),
+
+        ]);
     }
 
     /**
-     * Store a newly created student.
+     * Store student.
      */
     public function store(StoreStudentRequest $request)
     {
         Student::create($request->validated());
 
         return redirect()
+
             ->route('students.index')
+
             ->with('success', 'Student has been added successfully.');
     }
 
     /**
-     * Display the specified student.
+     * Import CSV page.
+     */
+    public function importForm()
+    {
+        return view('students.import');
+    }
+
+    /**
+     * Import CSV.
+     */
+    public function import(ImportStudentRequest $request)
+    {
+        $file = fopen($request->file('csv_file')->getRealPath(), 'r');
+
+        // Skip heading row
+        fgetcsv($file);
+
+        $count = 0;
+
+        while (($row = fgetcsv($file)) !== false) {
+
+            if (count($row) < 5) {
+                continue;
+            }
+
+            [
+                $studentId,
+                $studentName,
+                $departmentName,
+                $courseName,
+                $batch
+            ] = $row;
+
+            $department = Department::where(
+                'department_name',
+                trim($departmentName)
+            )->first();
+
+            if (!$department) {
+                continue;
+            }
+
+            $course = Course::where('department_id', $department->id)
+                ->where('course_name', trim($courseName))
+                ->first();
+
+            if (!$course) {
+                continue;
+            }
+
+            Student::updateOrCreate(
+
+                [
+                    'student_id' => trim($studentId)
+                ],
+
+                [
+                    'student_name' => trim($studentName),
+                    'department_id' => $department->id,
+                    'course_id' => $course->id,
+                    'batch' => $batch
+                ]
+
+            );
+
+            $count++;
+        }
+
+        fclose($file);
+
+        return redirect()
+
+            ->route('students.index')
+
+            ->with(
+                'success',
+                "{$count} students imported successfully."
+            );
+    }
+
+    /**
+     * Show student.
      */
     public function show(Student $student)
     {
@@ -114,45 +188,46 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified student.
+     * Edit form.
      */
     public function edit(Student $student)
     {
-        $departments = Department::orderBy('department_name')->get();
+        return view('students.edit', [
 
-        $courses = Course::orderBy('course_name')->get();
+            'student' => $student,
 
-        return view(
-            'students.edit',
-            compact(
-                'student',
-                'departments',
-                'courses'
-            )
-        );
+            'departments' => Department::orderBy('department_name')->get(),
+
+            'courses' => Course::orderBy('course_name')->get(),
+
+        ]);
     }
 
     /**
-     * Update the specified student.
+     * Update student.
      */
     public function update(UpdateStudentRequest $request, Student $student)
     {
         $student->update($request->validated());
 
         return redirect()
+
             ->route('students.index')
+
             ->with('success', 'Student updated successfully.');
     }
 
     /**
-     * Remove the specified student.
+     * Delete student.
      */
     public function destroy(Student $student)
     {
         $student->delete();
 
         return redirect()
+
             ->route('students.index')
+
             ->with('success', 'Student deleted successfully.');
     }
 }

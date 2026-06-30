@@ -23,13 +23,25 @@
 
             </div>
 
-            <a
-                href="{{ route('students.create') }}"
-                class="btn btn-primary">
+            <div class="flex gap-3">
 
-                + Add Student
+                <a
+                    href="{{ route('students.import.form') }}"
+                    class="btn btn-outline">
 
-            </a>
+                    📥 Import CSV
+
+                </a>
+
+                <a
+                    href="{{ route('students.create') }}"
+                    class="btn btn-primary">
+
+                    + Add Student
+
+                </a>
+
+            </div>
 
         </div>
 
