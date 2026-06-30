@@ -23,12 +23,14 @@
                 </svg>
             </div>
             <div>
-                <h1 class="text-2xl font-bold tracking-wide">
-                    ExamSeat
-                </h1>
-                <p class="text-slate-400 text-xs tracking-wider uppercase font-medium">
-                    Management System
-                </p>
+                <a href="{{ route('dashboard') }}" class="group block">
+                    <h1 class="text-2xl font-bold tracking-wide group-hover:text-indigo-400 transition-colors duration-200">
+                        ExamSeat
+                    </h1>
+                    <p class="text-slate-400 text-xs tracking-wider uppercase font-medium group-hover:text-slate-300 transition-colors duration-200">
+                        Management System
+                    </p>
+                </a>
             </div>
         </div>
 

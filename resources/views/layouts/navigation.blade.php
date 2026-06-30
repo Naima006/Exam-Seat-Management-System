@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-30 rounded-2xl backdrop-blur-lg overflow-hidden">
+<header class="sticky top-0 z-30 backdrop-blur-lg">
     <div
         class="card flex items-center justify-between px-6 py-4 mx-2 my-1">
 
@@ -81,32 +81,6 @@
 
             </div>
 
-            {{-- Notification Button --}}
-
-            <button
-                class="relative p-2 rounded-xl hover:bg-white/10 transition">
-
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 17h5l-1.4-1.4A2 2 0 0118 14.17V11a6 6 0 10-12 0v3.17a2 2 0 01-.6 1.43L4 17h5m6 0a3 3 0 11-6 0"/>
-
-                </svg>
-
-                <span
-                    class="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500">
-
-                </span>
-
-            </button>
 
             {{-- User Dropdown --}}
 
