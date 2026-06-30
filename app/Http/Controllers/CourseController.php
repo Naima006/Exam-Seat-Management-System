@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CourseController extends Controller
 {
@@ -24,12 +25,12 @@ class CourseController extends Controller
                 $query->where(function ($q) use ($search) {
 
                     $q->where('course_name', 'LIKE', "%{$search}%")
-                    ->orWhere('course_code', 'LIKE', "%{$search}%")
-                    ->orWhereHas('department', function ($dept) use ($search) {
+                      ->orWhere('course_code', 'LIKE', "%{$search}%")
+                      ->orWhereHas('department', function ($dept) use ($search) {
 
                             $dept->where('department_name', 'LIKE', "%{$search}%");
 
-                    });
+                      });
 
                 });
 
@@ -40,7 +41,6 @@ class CourseController extends Controller
             ->paginate(10)
 
             ->withQueryString();
-
 
         $statistics = [
 
@@ -62,6 +62,22 @@ class CourseController extends Controller
     }
 
     /**
+     * Return courses belonging to a department (AJAX).
+     */
+    public function getCoursesByDepartment(Department $department): JsonResponse
+    {
+        $courses = Course::where('department_id', $department->id)
+            ->orderBy('course_name')
+            ->get([
+                'id',
+                'course_name',
+                'course_code'
+            ]);
+
+        return response()->json($courses);
+    }
+
+    /**
      * Show create form.
      */
     public function create()
@@ -79,9 +95,7 @@ class CourseController extends Controller
         Course::create($request->validated());
 
         return redirect()
-
             ->route('courses.index')
-
             ->with('success', 'Course has been added successfully.');
     }
 
@@ -116,9 +130,7 @@ class CourseController extends Controller
         $course->update($request->validated());
 
         return redirect()
-
             ->route('courses.index')
-
             ->with('success', 'Course updated successfully.');
     }
 
@@ -130,9 +142,7 @@ class CourseController extends Controller
         $course->delete();
 
         return redirect()
-
             ->route('courses.index')
-
             ->with('success', 'Course deleted successfully.');
     }
 }
