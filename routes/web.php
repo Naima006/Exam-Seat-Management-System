@@ -8,17 +8,34 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\InvigilatorController;
+use App\Http\Controllers\ExamController;
 
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
 
 // Redirect the home page to the login page
 Route::redirect('/', '/login');
 
-// Dashboard (accessible only after login)
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Protected Routes
+/*
+|--------------------------------------------------------------------------
+| Protected Routes
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth'])->group(function () {
 
     /*
@@ -26,9 +43,14 @@ Route::middleware(['auth'])->group(function () {
     | Profile Management
     |--------------------------------------------------------------------------
     */
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +66,11 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::resource('courses', CourseController::class);
 
-    // Student Management
+    /*
+    |--------------------------------------------------------------------------
+    | Student Management
+    |--------------------------------------------------------------------------
+    */
     Route::resource('students', StudentController::class);
 
     /*
@@ -53,6 +79,21 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::resource('rooms', RoomController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Invigilator Management
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('invigilators', InvigilatorController::class);
+
+    /*
+|--------------------------------------------------------------------------
+| Exam Management
+|--------------------------------------------------------------------------
+*/
+
+Route::resource('exams', ExamController::class);
 
 });
 
