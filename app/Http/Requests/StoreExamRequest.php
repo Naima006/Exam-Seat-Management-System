@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Exam;
 
 class StoreExamRequest extends FormRequest
 {
@@ -17,24 +18,64 @@ class StoreExamRequest extends FormRequest
 
             'course_id' => [
                 'required',
-                'exists:courses,id'
+                'exists:courses,id',
             ],
 
             'exam_date' => [
                 'required',
-                'date'
+                'date',
             ],
 
             'start_time' => [
-                'required'
+                'required',
             ],
 
             'end_time' => [
                 'required',
-                'after:start_time'
+                'after:start_time',
             ],
 
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            $conflict = Exam::where('course_id', $this->course_id)
+                ->where('exam_date', $this->exam_date)
+                ->where(function ($query) {
+
+                    $query->whereBetween('start_time', [
+                        $this->start_time,
+                        $this->end_time
+                    ])
+
+                    ->orWhereBetween('end_time', [
+                        $this->start_time,
+                        $this->end_time
+                    ])
+
+                    ->orWhere(function ($q) {
+
+                        $q->where('start_time', '<=', $this->start_time)
+                          ->where('end_time', '>=', $this->end_time);
+
+                    });
+
+                })
+                ->exists();
+
+            if ($conflict) {
+
+                $validator->errors()->add(
+                    'course_id',
+                    'This course already has an exam scheduled during the selected time.'
+                );
+
+            }
+
+        });
     }
 
     public function messages()
@@ -45,7 +86,7 @@ class StoreExamRequest extends FormRequest
 
             'course_id.exists' => 'Selected course is invalid.',
 
-            'end_time.after' => 'End time must be after start time.'
+            'end_time.after' => 'End time must be after start time.',
 
         ];
     }

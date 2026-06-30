@@ -140,7 +140,7 @@
             </a>
 
             {{-- Add Exam --}}
-            <a href="#"
+            <a href="{{ route('exams.create') }}"
             class="group flex flex-col items-center justify-center p-5 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all duration-300 transform hover:-translate-y-1">
                 <div class="p-3 rounded-xl bg-slate-800/80 text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 shadow-md mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -323,14 +323,72 @@
     {{-- Future Modules --}}
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-        {{-- Upcoming Exams --}}
-        <div class="card p-6">
+    {{-- Upcoming Exams --}}
+    <div class="card p-6">
 
-            <h2 class="text-xl font-semibold mb-5">
+        <h2 class="text-xl font-semibold mb-5">
+            Upcoming Exams
+        </h2>
 
-                Upcoming Exams
+        @if($upcomingExams->count())
 
-            </h2>
+            <div class="space-y-4">
+
+                @foreach($upcomingExams as $exam)
+
+                    <div class="p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:border-indigo-500/30 transition">
+
+                        <div class="flex justify-between items-start">
+
+                            <div>
+
+                                <h3 class="font-semibold text-white">
+
+                                    {{ $exam->course->course_name }}
+
+                                </h3>
+
+                                <p class="text-slate-400 text-sm mt-1">
+
+                                    {{ \Carbon\Carbon::parse($exam->exam_date)->format('d M Y') }}
+
+                                </p>
+
+                            </div>
+
+                            <span class="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
+
+                                Upcoming
+
+                            </span>
+
+                        </div>
+
+                        <div class="mt-3 flex justify-between text-sm">
+
+                            <span class="text-slate-400">
+
+                                Time
+
+                            </span>
+
+                            <span class="font-medium text-white">
+
+                                {{ \Carbon\Carbon::parse($exam->start_time)->format('h:i A') }}
+                                -
+                                {{ \Carbon\Carbon::parse($exam->end_time)->format('h:i A') }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        @else
 
             <div class="flex flex-col items-center justify-center py-12">
 
@@ -342,19 +400,21 @@
 
                 <h3 class="text-xl font-semibold">
 
-                    Exam Module Coming Soon
+                    No Upcoming Exams
 
                 </h3>
 
                 <p class="text-slate-400 mt-2 text-center">
 
-                    Upcoming examinations will automatically appear here after the Exam module is implemented.
+                    Schedule an exam to see it listed here.
 
                 </p>
 
             </div>
 
-        </div>
+        @endif
+
+    </div>
 
         {{-- Recent Activities --}}
         <div class="card p-6">
