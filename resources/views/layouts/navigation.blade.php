@@ -1,8 +1,7 @@
-<header
-    class="sticky top-0 z-30">
+<header class="sticky top-0 z-50 rounded-2xl backdrop-blur-lg overflow-hidden">
 
     <div
-        class="card flex items-center justify-between px-6 py-4 mx-4 mt-4">
+        class="card flex items-center justify-between px-6 py-4 mx-2 my-1">
 
         {{-- Left --}}
 

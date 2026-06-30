@@ -2,7 +2,7 @@
     id="sidebar"
     class="sidebar fixed inset-y-0 left-0 z-50 w-72 -translate-x-full lg:translate-x-0 transition-transform duration-300">
 
-    <div class="card h-full flex flex-col mx-4 my-4 p-6 overflow-hidden">
+    <div class="card h-full flex flex-col mx-4 my-1 p-6 overflow-hidden">
 
         <div class="flex justify-end lg:hidden mb-2">
 
@@ -17,7 +17,7 @@
         </div>
 
         <div class="mb-10 flex items-center gap-3 shrink-0">
-            <div class="p-2.5 rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/30 flex items-center justify-center">
+            <div class="p-2.5 rounded-xl bg-linear-to-tr from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/30 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
@@ -32,9 +32,32 @@
             </div>
         </div>
 
-        <nav class="flex-1 space-y-2 overflow-y-auto pr-1" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <nav class="flex-1 space-y-2 overflow-y-auto pr-1 modern-sidebar-nav">
             <style>
-                nav::-webkit-scrollbar { display: none; }
+                .modern-sidebar-nav::-webkit-scrollbar {
+                    width: 1px; 
+                    transition: all 0.3s ease;
+                }
+                .modern-sidebar-nav::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                /* Barely visible track indicator initially */
+                .modern-sidebar-nav::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.03);
+                    border-radius: 99px;
+                }
+                /* Sleek visibility update when the user hovers directly over the links */
+                .modern-sidebar-nav:hover::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.12);
+                }
+                /* Firefox engine overrides */
+                .modern-sidebar-nav {
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(255, 255, 255, 0.03) transparent;
+                }
+                .modern-sidebar-nav:hover {
+                    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+                }
             </style>
 
             {{-- Dashboard --}}
