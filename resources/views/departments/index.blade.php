@@ -104,6 +104,7 @@
                 <div class="flex-1">
 
                     <input
+                        id="departmentSearch"
                         type="text"
                         name="search"
                         class="input w-full"
@@ -297,6 +298,29 @@
 @push('scripts')
 
 <script>
+
+// ======================
+// Live Search
+// ======================
+
+let searchTimer;
+
+document.getElementById('departmentSearch').addEventListener('keyup', function () {
+
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(() => {
+
+        this.form.submit();
+
+    }, 800);
+
+});
+
+
+// ======================
+// Delete Confirmation
+// ======================
 
 document.querySelectorAll('.delete-form').forEach(form => {
 
