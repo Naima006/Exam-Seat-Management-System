@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\StudentController;
+
 
 // Redirect the home page to the login page
 Route::redirect('/', '/login');
@@ -41,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::resource('courses', CourseController::class);
+
+    // Student Management
+    Route::resource('students', StudentController::class);
 
     /*
     |--------------------------------------------------------------------------
