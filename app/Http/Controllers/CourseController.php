@@ -24,12 +24,12 @@ class CourseController extends Controller
                 $query->where(function ($q) use ($search) {
 
                     $q->where('course_name', 'LIKE', "%{$search}%")
-                      ->orWhere('course_code', 'LIKE', "%{$search}%")
-                      ->orWhereHas('department', function ($department) use ($search) {
+                    ->orWhere('course_code', 'LIKE', "%{$search}%")
+                    ->orWhereHas('department', function ($dept) use ($search) {
 
-                          $department->where('department_name', 'LIKE', "%{$search}%");
+                            $dept->where('department_name', 'LIKE', "%{$search}%");
 
-                      });
+                    });
 
                 });
 
@@ -41,21 +41,24 @@ class CourseController extends Controller
 
             ->withQueryString();
 
-        // Statistics
+
         $statistics = [
 
-            'totalCourses' => Course::count(),
+            'totalCourses'      => Course::count(),
 
-            'totalDepartments' => Department::count(),
+            'totalDepartments'  => Department::count(),
 
-            'latestCourse' => Course::latest()->first(),
+            'highestSemester'   => Course::max('semester') ?? 0,
 
         ];
 
-        return view('courses.index', array_merge(
-            compact('courses'),
-            $statistics
-        ));
+        return view(
+            'courses.index',
+            array_merge(
+                compact('courses'),
+                $statistics
+            )
+        );
     }
 
     /**
