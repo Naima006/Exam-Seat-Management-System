@@ -131,10 +131,11 @@
 
             </a>
 
-            {{-- Invigilators --}}
-            <a href="#" class="sidebar-link flex items-center gap-3">
+         {{-- Invigilators --}}
+<a href="{{ route('invigilators.index') }}"
+   class="sidebar-link {{ request()->routeIs('invigilators.*') ? 'active' : '' }}">
 
-                <div class="p-2 rounded-lg bg-slate-800/50 text-indigo-400 border border-slate-700/30 dynamic-icon-box transition-colors duration-200">
+     <div class="p-2 rounded-lg bg-slate-800/50 text-indigo-400 border border-slate-700/30 dynamic-icon-box transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.33 0-6 2.67-6 6h12c0-3.33-2.67-6-6-6z"/>
                     </svg>
@@ -143,9 +144,9 @@
                 Invigilators
 
             </a>
-
             {{-- Exams --}}
-            <a href="#" class="sidebar-link flex items-center gap-3">
+           <a href="{{ route('exams.index') }}"
+   class="sidebar-link {{ request()->routeIs('exams.*') ? 'active' : '' }}">
 
                 <div class="p-2 rounded-lg bg-slate-800/50 text-indigo-400 border border-slate-700/30 dynamic-icon-box transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

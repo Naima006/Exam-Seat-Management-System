@@ -168,7 +168,7 @@
 
                     <h4 class="mt-2">
 
-                        {{ $room->created_at->format('d M Y, h:i A') }}
+                        {{ $room->created_at->format('d M Y') }}
 
                     </h4>
 
@@ -184,7 +184,7 @@
 
                     <h4 class="mt-2">
 
-                        {{ $room->updated_at->format('d M Y, h:i A') }}
+                        {{ $room->updated_at->format('d M Y') }}
 
                     </h4>
 
