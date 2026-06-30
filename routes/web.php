@@ -81,6 +81,17 @@ Route::middleware(['auth'])->group(function () {
     | Student Management
     |--------------------------------------------------------------------------
     */
+
+    Route::get(
+        'students/import',
+        [StudentController::class, 'importForm']
+    )->name('students.import.form');
+
+    Route::post(
+        'students/import',
+        [StudentController::class, 'import']
+    )->name('students.import');
+
     Route::resource('students', StudentController::class);
 
     /*
