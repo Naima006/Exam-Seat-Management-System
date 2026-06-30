@@ -68,6 +68,16 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | AJAX Course Filter (Department -> Courses)
+    |--------------------------------------------------------------------------
+    */
+    Route::get(
+        '/departments/{department}/courses',
+        [CourseController::class, 'getCoursesByDepartment']
+    )->name('departments.courses');
+
+    /*
+    |--------------------------------------------------------------------------
     | Student Management
     |--------------------------------------------------------------------------
     */

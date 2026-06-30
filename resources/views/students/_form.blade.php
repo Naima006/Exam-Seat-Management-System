@@ -49,6 +49,7 @@
         </label>
 
         <select
+            id="department"
             name="department_id"
             class="input w-full">
 
@@ -85,6 +86,7 @@
         </label>
 
         <select
+            id="course"
             name="course_id"
             class="input w-full">
 
@@ -96,6 +98,7 @@
 
                 <option
                     value="{{ $course->id }}"
+                    data-department="{{ $course->department_id }}"
                     {{ old('course_id', $student->course_id ?? '') == $course->id ? 'selected' : '' }}>
 
                     {{ $course->course_name }}
@@ -154,5 +157,73 @@
         Save Student
 
     </button>
+    
+    @push('scripts')
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const department = document.getElementById('department');
+            const course = document.getElementById('course');
+
+            // Current course (used when editing)
+            const selectedCourse = "{{ old('course_id', $student->course_id ?? '') }}";
+
+            function loadCourses(departmentId, selected = '') {
+
+                course.innerHTML = '<option value="">Loading...</option>';
+
+                if (!departmentId) {
+
+                    course.innerHTML = '<option value="">Select Course</option>';
+                    return;
+
+                }
+
+                fetch(`/departments/${departmentId}/courses`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        course.innerHTML = '<option value="">Select Course</option>';
+
+                        data.forEach(item => {
+
+                            const option = document.createElement('option');
+
+                            option.value = item.id;
+                            option.textContent = `${item.course_name} (${item.course_code})`;
+
+                            if (selected == item.id) {
+                                option.selected = true;
+                            }
+
+                            course.appendChild(option);
+
+                        });
+
+                    });
+
+            }
+
+            // When department changes
+            department.addEventListener('change', function () {
+
+                loadCourses(this.value);
+
+            });
+
+            // Automatically load courses on page load (Edit page)
+            if (department.value) {
+
+                loadCourses(department.value, selectedCourse);
+
+            }
+
+        });
+
+    </script>
+
+@endpush
 
 </div>
