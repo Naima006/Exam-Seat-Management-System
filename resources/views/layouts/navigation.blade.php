@@ -81,8 +81,19 @@
             </div>
 
 
-            {{-- User Dropdown --}}
+            {{-- Theme Toggle --}}
+            <button
+                id="themeToggle"
+                class="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-white/10 transition"
+                title="Toggle Theme">
 
+                <span id="themeIcon" class="text-xl">
+                    🌙
+                </span>
+
+            </button>
+
+            {{-- User Dropdown --}}
             <div class="relative">
 
                 <button
