@@ -31,71 +31,64 @@
     {{-- Statistics --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
-        <div class="card stat-card">
-
-            <p class="stat-title">
+        {{-- Departments Stat --}}
+        <div class="card stat-card transition-all duration-300 ease-out transform hover:-translate-y-1 hover:bg-indigo-500/[0.04] hover:border-indigo-500/30 hover:shadow-[0_8px_30px_rgb(99,102,241,0.08)] relative overflow-hidden group">
+            <div class="absolute -right-6 -top-6 w-20 h-20 bg-indigo-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <p class="stat-title text-slate-400 font-medium text-sm tracking-wide group-hover:text-indigo-300 transition-colors duration-300">
                 Departments
             </p>
-
-            <h2 class="stat-value">
+            <h2 class="stat-value text-3xl font-extrabold text-white mt-2 group-hover:scale-[1.02] origin-left transition-transform duration-300">
                 {{ $totalDepartments }}
             </h2>
-
-            <p class="text-slate-400 mt-2 text-sm">
+            <p class="text-slate-400/80 mt-2 text-xs uppercase tracking-wider font-medium">
                 Registered Departments
             </p>
-
         </div>
 
+        {{-- Courses Stat --}}
+        <div class="card stat-card transition-all duration-300 ease-out transform hover:-translate-y-1 hover:bg-violet-500/[0.04] hover:border-violet-500/30 hover:shadow-[0_8px_30px_rgb(139,92,246,0.08)] relative overflow-hidden group">
+            <div class="absolute -right-6 -top-6 w-20 h-20 bg-violet-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-        <div class="card stat-card">
-
-            <p class="stat-title">
+            <p class="stat-title text-slate-400 font-medium text-sm tracking-wide group-hover:text-violet-300 transition-colors duration-300">
                 Courses
             </p>
-
-            <h2 class="stat-value">
+            <h2 class="stat-value text-3xl font-extrabold text-white mt-2 group-hover:scale-[1.02] origin-left transition-transform duration-300">
                 {{ $totalCourses }}
             </h2>
-
-            <p class="text-slate-400 mt-2 text-sm">
+            <p class="text-slate-400/80 mt-2 text-xs uppercase tracking-wider font-medium">
                 Available Courses
             </p>
-
         </div>
 
+        {{-- Rooms Stat --}}
+        <div class="card stat-card transition-all duration-300 ease-out transform hover:-translate-y-1 hover:bg-emerald-500/[0.04] hover:border-emerald-500/30 hover:shadow-[0_8px_30px_rgb(16,185,129,0.08)] relative overflow-hidden group">
+            <div class="absolute -right-6 -top-6 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-        <div class="card stat-card">
-
-            <p class="stat-title">
+            <p class="stat-title text-slate-400 font-medium text-sm tracking-wide group-hover:text-emerald-300 transition-colors duration-300">
                 Rooms
             </p>
-
-            <h2 class="stat-value">
+            <h2 class="stat-value text-3xl font-extrabold text-white mt-2 group-hover:scale-[1.02] origin-left transition-transform duration-300">
                 {{ $totalRooms }}
             </h2>
-
-            <p class="text-slate-400 mt-2 text-sm">
+            <p class="text-slate-400/80 mt-2 text-xs uppercase tracking-wider font-medium">
                 Active Examination Rooms
             </p>
-
         </div>
 
+        {{-- Available Seating Capacity Stat --}}
+        <div class="card stat-card transition-all duration-300 ease-out transform hover:-translate-y-1 hover:bg-amber-500/[0.04] hover:border-amber-500/30 hover:shadow-[0_8px_30px_rgb(245,158,11,0.08)] relative overflow-hidden group">
+            <div class="absolute -right-6 -top-6 w-20 h-20 bg-amber-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-        <div class="card stat-card">
-
-            <p class="stat-title">
+            <p class="stat-title text-slate-400 font-medium text-sm tracking-wide group-hover:text-amber-300 transition-colors duration-300">
                 Available Seating Capacity
             </p>
-
-            <h2 class="stat-value">
+            <h2 class="stat-value text-3xl font-extrabold text-white mt-2 group-hover:scale-[1.02] origin-left transition-transform duration-300">
                 {{ $totalCapacity }}
             </h2>
-
-            <p class="text-slate-400 mt-2 text-sm">
+            <p class="text-slate-400/80 mt-2 text-xs uppercase tracking-wider font-medium">
                 Total Available Seats
             </p>
-
         </div>
 
     </div>
@@ -185,56 +178,38 @@
         {{-- Latest Department --}}
         <div class="card p-6">
 
-            <h2 class="text-xl font-semibold mb-5">
-
+            <h2 class="text-xl font-bold tracking-wide mb-5 flex items-center gap-2 border-b border-white/5 pb-3">
                 Latest Department
-
             </h2>
 
             @if($latestDepartment)
 
-                <div class="space-y-3">
+                <div class="space-y-4">
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex flex-col gap-1">
+                        <p class="text-slate-400 text-xs uppercase tracking-wider font-medium">
                             Department Name
-
                         </p>
-
-                        <h3 class="text-xl font-bold">
-
+                        <h3 class="text-lg font-bold text-white">
                             {{ $latestDepartment->department_name }}
-
                         </h3>
-
                     </div>
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                        <p class="text-slate-400 text-sm font-medium">
                             Department Code
-
                         </p>
-
-                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300">
-
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 shadow-sm">
                             {{ $latestDepartment->department_code }}
-
                         </span>
-
                     </div>
 
                 </div>
 
             @else
 
-                <p class="text-slate-400">
-
+                <p class="text-slate-400 text-sm italic">
                     No departments available.
-
                 </p>
 
             @endif
@@ -245,72 +220,47 @@
         {{-- Latest Course --}}
         <div class="card p-6">
 
-            <h2 class="text-xl font-semibold mb-5">
-
+            <h2 class="text-xl font-bold tracking-wide mb-5 flex items-center gap-2 border-b border-white/5 pb-3">
                 Latest Course
-
             </h2>
 
             @if($latestCourse)
 
-                <div class="space-y-3">
+                <div class="space-y-4">
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex flex-col gap-1">
+                        <p class="text-slate-400 text-xs uppercase tracking-wider font-medium">
                             Course Name
-
                         </p>
-
-                        <h3 class="text-xl font-bold">
-
+                        <h3 class="text-lg font-bold text-white">
                             {{ $latestCourse->course_name }}
-
                         </h3>
-
                     </div>
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                        <p class="text-slate-400 text-sm font-medium">
                             Course Code
-
                         </p>
-
-                        <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300">
-
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-500/10 border border-green-500/20 text-green-400 shadow-sm">
                             {{ $latestCourse->course_code }}
-
                         </span>
-
                     </div>
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                        <p class="text-slate-400 text-sm font-medium">
                             Semester
-
                         </p>
-
-                        <strong>
-
+                        <span class="text-sm font-bold text-white bg-slate-800 px-2.5 py-1 rounded-lg border border-white/5">
                             {{ $latestCourse->semester }}
-
-                        </strong>
-
+                        </span>
                     </div>
 
                 </div>
 
             @else
 
-                <p class="text-slate-400">
-
+                <p class="text-slate-400 text-sm italic">
                     No courses available.
-
                 </p>
 
             @endif
@@ -321,72 +271,47 @@
         {{-- Latest Room --}}
         <div class="card p-6">
 
-            <h2 class="text-xl font-semibold mb-5">
-
+            <h2 class="text-xl font-bold tracking-wide mb-5 flex items-center gap-2 border-b border-white/5 pb-3">
                 Latest Room
-
             </h2>
 
             @if($latestRoom)
 
-                <div class="space-y-3">
+                <div class="space-y-4">
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex flex-col gap-1">
+                        <p class="text-slate-400 text-xs uppercase tracking-wider font-medium">
                             Room Number
-
                         </p>
-
-                        <h3 class="text-xl font-bold">
-
+                        <h3 class="text-lg font-bold text-white">
                             {{ $latestRoom->room_no }}
-
                         </h3>
-
                     </div>
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                        <p class="text-slate-400 text-sm font-medium">
                             Building
-
                         </p>
-
-                        <strong>
-
+                        <span class="text-sm font-bold text-white bg-slate-800 px-2.5 py-1 rounded-lg border border-white/5">
                             {{ $latestRoom->building }}
-
-                        </strong>
-
+                        </span>
                     </div>
 
-                    <div>
-
-                        <p class="text-slate-400 text-sm">
-
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                        <p class="text-slate-400 text-sm font-medium">
                             Capacity
-
                         </p>
-
-                        <strong>
-
+                        <span class="text-sm font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/20 shadow-sm">
                             {{ $latestRoom->capacity }} Seats
-
-                        </strong>
-
+                        </span>
                     </div>
 
                 </div>
 
             @else
 
-                <p class="text-slate-400">
-
+                <p class="text-slate-400 text-sm italic">
                     No rooms available.
-
                 </p>
 
             @endif

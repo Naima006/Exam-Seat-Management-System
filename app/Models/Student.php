@@ -13,15 +13,9 @@ class Student extends Model
 
         'student_id',
         'student_name',
-        'email',
-        'phone',
-        'gender',
         'department_id',
         'course_id',
-        'semester',
-        'section',
-        'session',
-        'status',
+        'batch',
 
     ];
 

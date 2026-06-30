@@ -18,13 +18,14 @@
                 </h1>
 
                 <p class="text-slate-400 mt-2">
-                    Register a new student for examination seat management.
+                    Register a new student for examination seat allocation.
                 </p>
 
             </div>
 
-            <a href="{{ route('students.index') }}"
-               class="btn btn-outline">
+            <a
+                href="{{ route('students.index') }}"
+                class="btn btn-outline">
 
                 Back
 
@@ -37,24 +38,13 @@
     {{-- Form --}}
     <div class="card p-6">
 
-        <form method="POST"
-              action="{{ route('students.store') }}">
+        <form
+            method="POST"
+            action="{{ route('students.store') }}">
 
             @csrf
 
             @include('students._form')
-
-            <div class="flex justify-end mt-8">
-
-                <button
-                    type="submit"
-                    class="btn btn-primary loading-btn">
-
-                    Save Student
-
-                </button>
-
-            </div>
 
         </form>
 

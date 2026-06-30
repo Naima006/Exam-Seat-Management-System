@@ -25,8 +25,7 @@ class StudentController extends Controller
                 $query->where(function ($q) use ($search) {
 
                     $q->where('student_name', 'LIKE', "%{$search}%")
-                    ->orWhere('student_id', 'LIKE', "%{$search}%")
-                    ->orWhere('email', 'LIKE', "%{$search}%");
+                      ->orWhere('student_id', 'LIKE', "%{$search}%");
 
                 })
 
@@ -50,13 +49,16 @@ class StudentController extends Controller
 
             ->withQueryString();
 
+        // AJAX request → return only table rows
+        if ($request->ajax()) {
+
+            return view('students.partials.table', compact('students'))->render();
+
+        }
+
         $statistics = [
 
             'totalStudents' => Student::count(),
-
-            'activeStudents' => Student::where('status', 'Active')->count(),
-
-            'inactiveStudents' => Student::where('status', 'Inactive')->count(),
 
             'latestStudent' => Student::latest()->first(),
 
@@ -72,7 +74,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for creating a new student.
+     * Show create form.
      */
     public function create()
     {
@@ -100,6 +102,7 @@ class StudentController extends Controller
             ->route('students.index')
             ->with('success', 'Student has been added successfully.');
     }
+
     /**
      * Display the specified student.
      */
@@ -132,10 +135,7 @@ class StudentController extends Controller
     /**
      * Update the specified student.
      */
-    public function update(
-        UpdateStudentRequest $request,
-        Student $student
-    )
+    public function update(UpdateStudentRequest $request, Student $student)
     {
         $student->update($request->validated());
 

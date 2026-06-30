@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="max-w-5xl mx-auto space-y-6">
+<div class="space-y-6">
 
     {{-- Header --}}
     <div class="card p-6">
@@ -23,8 +23,9 @@
 
             </div>
 
-            <a href="{{ route('students.index') }}"
-               class="btn btn-outline">
+            <a
+                href="{{ route('students.index') }}"
+                class="btn btn-outline">
 
                 Back
 
@@ -45,25 +46,6 @@
             @method('PUT')
 
             @include('students._form')
-
-            <div class="mt-8 flex justify-end gap-3">
-
-                <a href="{{ route('students.index') }}"
-                   class="btn btn-outline">
-
-                    Cancel
-
-                </a>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary loading-btn">
-
-                    Update Student
-
-                </button>
-
-            </div>
 
         </form>
 

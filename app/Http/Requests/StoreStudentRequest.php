@@ -44,41 +44,10 @@ class StoreStudentRequest extends FormRequest
                 'exists:courses,id',
             ],
 
-            'semester' => [
-                'required',
-                'integer',
-                'min:1',
-                'max:12',
-            ],
-
-            'section' => [
-                'required',
-                'string',
-                'max:10',
-            ],
-
             'batch' => [
                 'required',
                 'integer',
                 'min:1',
-            ],
-
-            'email' => [
-                'nullable',
-                'email',
-                'max:255',
-                'unique:students,email',
-            ],
-
-            'phone' => [
-                'nullable',
-                'string',
-                'max:20',
-            ],
-
-            'status' => [
-                'required',
-                'in:Active,Inactive',
             ],
 
         ];

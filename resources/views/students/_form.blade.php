@@ -42,48 +42,6 @@
     </div>
 
 
-    {{-- Email --}}
-    <div>
-        <label class="block mb-2 font-medium">
-            Email
-        </label>
-
-        <input
-            type="email"
-            name="email"
-            class="input w-full"
-            placeholder="student@email.com"
-            value="{{ old('email', $student->email ?? '') }}">
-
-        @error('email')
-            <p class="text-red-400 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
-    {{-- Phone --}}
-    <div>
-        <label class="block mb-2 font-medium">
-            Phone
-        </label>
-
-        <input
-            type="text"
-            name="phone"
-            class="input w-full"
-            placeholder="01XXXXXXXXX"
-            value="{{ old('phone', $student->phone ?? '') }}">
-
-        @error('phone')
-            <p class="text-red-400 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
     {{-- Department --}}
     <div>
         <label class="block mb-2 font-medium">
@@ -156,51 +114,21 @@
     </div>
 
 
-    {{-- Semester --}}
+    {{-- Batch --}}
     <div>
         <label class="block mb-2 font-medium">
-            Semester
+            Batch
         </label>
 
         <input
             type="number"
-            name="semester"
+            name="batch"
             min="1"
-            max="12"
             class="input w-full"
-            value="{{ old('semester', $student->semester ?? '') }}">
+            placeholder="e.g. 61"
+            value="{{ old('batch', $student->batch ?? '') }}">
 
-        @error('semester')
-            <p class="text-red-400 text-sm mt-2">
-                {{ $message }}
-            </p>
-        @enderror
-    </div>
-
-
-    {{-- Status --}}
-    <div>
-        <label class="block mb-2 font-medium">
-            Status
-        </label>
-
-        <select
-            name="status"
-            class="input w-full">
-
-            <option value="Active"
-                {{ old('status', $student->status ?? 'Active') == 'Active' ? 'selected' : '' }}>
-                Active
-            </option>
-
-            <option value="Inactive"
-                {{ old('status', $student->status ?? '') == 'Inactive' ? 'selected' : '' }}>
-                Inactive
-            </option>
-
-        </select>
-
-        @error('status')
+        @error('batch')
             <p class="text-red-400 text-sm mt-2">
                 {{ $message }}
             </p>
@@ -208,7 +136,6 @@
     </div>
 
 </div>
-
 
 <div class="flex justify-end gap-4 mt-8">
 
