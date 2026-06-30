@@ -76,7 +76,7 @@
             </h2>
 
             <p class="text-slate-400 mt-2 text-sm">
-                Examination Rooms
+                Active Examination Rooms
             </p>
 
         </div>
@@ -85,7 +85,7 @@
         <div class="card stat-card">
 
             <p class="stat-title">
-                Seating Capacity
+                Available Seating Capacity
             </p>
 
             <h2 class="stat-value">

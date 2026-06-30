@@ -104,6 +104,7 @@
                 <div class="flex-1">
 
                     <input
+                        id="courseSearch"
                         type="text"
                         name="search"
                         class="input w-full"
@@ -356,6 +357,20 @@
 @push('scripts')
 
 <script>
+
+let searchTimer;
+
+document.getElementById('courseSearch').addEventListener('keyup', function () {
+
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(() => {
+
+        this.form.submit();
+
+    }, 800);
+
+});
 
 document.querySelectorAll('.delete-form').forEach(form => {
 

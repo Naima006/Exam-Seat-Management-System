@@ -10,14 +10,18 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // General Statistics
         $totalDepartments = Department::count();
 
         $totalCourses = Course::count();
 
-        $totalRooms = Room::count();
+        // Only Active Rooms
+        $totalRooms = Room::where('status', 'Active')->count();
 
-        $totalCapacity = Room::sum('capacity');
+        // Sum capacity of Active Rooms only
+        $totalCapacity = Room::where('status', 'Active')->sum('capacity');
 
+        // Latest Records
         $latestDepartment = Department::latest()->first();
 
         $latestCourse = Course::latest()->first();
