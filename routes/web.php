@@ -210,4 +210,9 @@ Route::resource(
     SeatAllocationController::class
 );
 
+Route::get(
+    'seat-allocations/export/pdf',
+    [SeatAllocationController::class,'exportPdf']
+)->name('seat-allocations.export.pdf');
+
 require __DIR__.'/auth.php';

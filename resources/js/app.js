@@ -170,18 +170,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* ============================================================
-       DELETE CONFIRMATION
+    DELETE CONFIRMATION (SweetAlert2)
     ============================================================ */
 
-    document.querySelectorAll('.confirm-delete').forEach(button => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-        button.addEventListener('click', function (e) {
+        document.querySelectorAll('.confirm-delete').forEach(button => {
 
-            if (!confirm('Are you sure you want to delete this record?')) {
+            button.addEventListener('click', function (e) {
 
                 e.preventDefault();
 
-            }
+                const form = this.closest('form');
+
+                Swal.fire({
+
+                    title: 'Delete Record?',
+
+                    text: 'This action cannot be undone.',
+
+                    icon: 'warning',
+
+                    showCancelButton: true,
+
+                    confirmButtonText: 'Delete',
+
+                    cancelButtonText: 'Cancel',
+
+                    confirmButtonColor: '#dc2626',
+
+                    cancelButtonColor: '#6b7280',
+
+                    reverseButtons: true
+
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        form.submit();
+
+                    }
+
+                });
+
+            });
 
         });
 
