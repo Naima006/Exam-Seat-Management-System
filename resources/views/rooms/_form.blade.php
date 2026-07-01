@@ -26,7 +26,7 @@
     <div>
 
         <label class="block mb-2 font-medium text-slate-300">
-            Building <span class="text-red-400">*</span>
+            Building no <span class="text-red-400">*</span>
         </label>
 
         <input
