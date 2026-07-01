@@ -10,6 +10,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InvigilatorController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,76 @@ Route::middleware(['auth'])->group(function () {
 */
 
 Route::resource('exams', ExamController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Report Module
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('reports')
+    ->name('reports.')
+    ->group(function () {
+
+        Route::get('/', [ReportController::class, 'index'])
+            ->name('index');
+
+        Route::get('/summary', [ReportController::class, 'summary'])
+            ->name('summary');
+
+        Route::get('/students', [ReportController::class, 'students'])
+            ->name('students');
+
+        Route::get('/departments', [ReportController::class, 'departments'])
+            ->name('departments');
+
+        Route::get('/courses', [ReportController::class, 'courses'])
+            ->name('courses');
+
+        Route::get('/rooms', [ReportController::class, 'rooms'])
+            ->name('rooms');
+
+        Route::get('/invigilators', [ReportController::class, 'invigilators'])
+            ->name('invigilators');
+
+        Route::get('/exams', [ReportController::class, 'exams'])
+            ->name('exams');
+
+        /*
+        |--------------------------------------------------------------------------
+        | PDF Export
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/summary/pdf',
+            [ReportController::class, 'summaryPdf'])
+            ->name('summary.pdf');
+
+        Route::get('/students/pdf',
+            [ReportController::class, 'studentsPdf'])
+            ->name('students.pdf');
+
+        Route::get('/departments/pdf',
+            [ReportController::class, 'departmentsPdf'])
+            ->name('departments.pdf');
+
+        Route::get('/courses/pdf',
+            [ReportController::class, 'coursesPdf'])
+            ->name('courses.pdf');
+
+        Route::get('/rooms/pdf',
+            [ReportController::class, 'roomsPdf'])
+            ->name('rooms.pdf');
+
+        Route::get('/invigilators/pdf',
+            [ReportController::class, 'invigilatorsPdf'])
+            ->name('invigilators.pdf');
+
+        Route::get('/exams/pdf',
+            [ReportController::class, 'examsPdf'])
+            ->name('exams.pdf');
+
+    });
 
 });
 
