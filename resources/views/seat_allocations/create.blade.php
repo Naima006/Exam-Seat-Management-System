@@ -21,8 +21,8 @@
 
                 <p class="text-slate-400 mt-2">
 
-                    Select an examination, rooms and invigilators before generating
-                    the seating arrangement.
+                    Select an examination session (Date & Time), rooms and invigilators.
+                    The system will automatically generate seating for ALL examinations running in that session.
 
                 </p>
 
@@ -57,40 +57,57 @@
 
                 </h2>
 
-                {{-- Exam --}}
+                {{-- Exam Session --}}
 
                 <div>
 
                     <label class="block mb-2 font-semibold">
 
-                        Examination
+                        Examination Date
 
                     </label>
 
                     <select
-                        name="exam_id"
+                        name="exam_date"
                         class="input w-full"
                         required>
 
-                        <option value="">
+                        <option value="">Select Date</option>
 
-                            Select Examination
+                        @foreach($examDates as $date)
 
-                        </option>
+                            <option value="{{ $date }}">
 
-                        @foreach($exams as $exam)
+                                {{ \Carbon\Carbon::parse($date)->format('d M Y') }}
 
-                            <option value="{{ $exam->id }}">
+                            </option>
 
-                                {{ $exam->course->course_name }}
+                        @endforeach
 
-                                |
+                    </select>
 
-                                {{ $exam->exam_date->format('d M Y') }}
+                </div>
 
-                                |
+                <div class="mt-5">
 
-                                {{ \Carbon\Carbon::parse($exam->start_time)->format('h:i A') }}
+                    <label class="block mb-2 font-semibold">
+
+                        Examination Time
+
+                    </label>
+
+                    <select
+                        name="start_time"
+                        class="input w-full"
+                        required>
+
+                        <option value="">Select Time</option>
+
+                        @foreach($examTimes as $time)
+
+                            <option value="{{ $time }}">
+
+                                {{ \Carbon\Carbon::parse($time)->format('h:i A') }}
 
                             </option>
 
@@ -259,7 +276,7 @@
 
             <ul class="space-y-3 text-slate-400 list-disc pl-6">
 
-                <li>Students from the same department will not sit beside each other whenever possible.</li>
+                <li>Students from the same course and department will not sit beside each other whenever possible.</li>
 
                 <li>Seat numbers are automatically generated based on row and column.</li>
 

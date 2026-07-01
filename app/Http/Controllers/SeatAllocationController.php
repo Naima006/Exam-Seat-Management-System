@@ -124,14 +124,35 @@ class SeatAllocationController extends Controller
      */
     public function create()
     {
-        $exams = Exam::with('course')
-            ->orderBy('exam_date')
-            ->orderBy('start_time')
-            ->get();
+        /*
+        |--------------------------------------------------------------------------
+        | Available Exam Sessions
+        |--------------------------------------------------------------------------
+        */
+
+        $examDates = Exam::orderBy('exam_date')
+            ->distinct()
+            ->pluck('exam_date');
+
+        $examTimes = Exam::orderBy('start_time')
+            ->distinct()
+            ->pluck('start_time');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Rooms
+        |--------------------------------------------------------------------------
+        */
 
         $rooms = Room::orderBy('building')
             ->orderBy('room_no')
             ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Invigilators
+        |--------------------------------------------------------------------------
+        */
 
         $invigilators = Invigilator::with('department')
             ->orderBy('name')
@@ -140,7 +161,8 @@ class SeatAllocationController extends Controller
         return view(
             'seat_allocations.create',
             compact(
-                'exams',
+                'examDates',
+                'examTimes',
                 'rooms',
                 'invigilators'
             )
@@ -153,60 +175,91 @@ class SeatAllocationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'exam_id' => 'required|exists:exams,id',
+            'exam_date' => 'required|date',
+            'start_time' => 'required',
             'rooms' => 'required|array|min:1',
             'rooms.*' => 'exists:rooms,id',
             'invigilators' => 'required|array',
-            'bench_capacity' => 'required|in:2,3'
+            'bench_capacity' => 'required|in:2,3',
         ]);
-
-        $exam = Exam::with('course')->findOrFail($request->exam_id);
-
-        // Remove previous allocation
-        SeatAllocation::where('exam_id', $exam->id)->delete();
 
         /*
         |--------------------------------------------------------------------------
-        | Students
+        | All Exams Running in This Session
         |--------------------------------------------------------------------------
         */
 
-        $students = Student::with('department')
-            ->where('course_id', $exam->course_id)
+        $exams = Exam::with('course')
+            ->whereDate('exam_date', $request->exam_date)
+            ->where('start_time', $request->start_time)
             ->get();
 
-        if ($students->count() == 0) {
+        if ($exams->isEmpty()) {
 
             return back()->with(
                 'error',
-                'No students found for this course.'
+                'No examinations found for the selected session.'
             );
 
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Anti-cheating shuffle
+        | Remove Previous Allocations For This Session
         |--------------------------------------------------------------------------
         */
 
-        $groups = $students
-            ->groupBy('department_id')
-            ->map(fn($g) => $g->values());
+        SeatAllocation::whereIn(
+            'exam_id',
+            $exams->pluck('id')
+        )->delete();
 
-        $students = collect();
+        /*
+        |--------------------------------------------------------------------------
+        | Build Course Queues
+        |--------------------------------------------------------------------------
+        */
 
-        while ($groups->filter(fn($g) => $g->count())->count()) {
+        $courseQueues = collect();
 
-            foreach ($groups as $key => $group) {
+        foreach ($exams as $exam) {
 
-                if ($group->isEmpty()) {
+            $students = Student::with('department')
+                ->where('course_id', $exam->course_id)
+                ->get()
+                ->shuffle()
+                ->values();
+
+            $courseQueues->push([
+                'exam' => $exam,
+                'students' => $students,
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Interleave Students
+        |--------------------------------------------------------------------------
+        */
+
+        $mixedStudents = collect();
+
+        while ($courseQueues->filter(fn($q) => $q['students']->count())->count()) {
+
+            foreach ($courseQueues as $index => $queue) {
+
+                if ($queue['students']->isEmpty()) {
                     continue;
                 }
 
-                $students->push($group->shift());
+                $student = $queue['students']->shift();
 
-                $groups[$key] = $group;
+                $mixedStudents->push([
+                    'student' => $student,
+                    'exam' => $queue['exam'],
+                ]);
+
+                $courseQueues[$index] = $queue;
             }
         }
 
@@ -220,7 +273,7 @@ class SeatAllocationController extends Controller
             ->orderBy('room_no')
             ->get();
 
-        if ($rooms->count() == 0) {
+        if ($rooms->isEmpty()) {
 
             return back()->with(
                 'error',
@@ -237,7 +290,7 @@ class SeatAllocationController extends Controller
 
         $capacity = $rooms->sum('capacity');
 
-        if ($capacity < $students->count()) {
+        if ($capacity < $mixedStudents->count()) {
 
             return back()->with(
                 'error',
@@ -248,7 +301,7 @@ class SeatAllocationController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Validate Invigilators BEFORE allocation
+        | Validate Invigilators
         |--------------------------------------------------------------------------
         */
 
@@ -265,54 +318,143 @@ class SeatAllocationController extends Controller
 
             }
 
-            $alreadyAssigned = SeatAllocation::where('invigilator_id', $invigilatorId)
-                ->whereHas('exam', function ($query) use ($exam) {
+            $busy = SeatAllocation::where('invigilator_id', $invigilatorId)
+                ->whereHas('exam', function($query) use ($request){
 
-                    $query->whereDate('exam_date', $exam->exam_date)
-                        ->where('start_time', $exam->start_time)
-                        ->where('id', '!=', $exam->id);
+                    $query->whereDate('exam_date', $request->exam_date)
+                        ->where('start_time', $request->start_time);
 
                 })
                 ->exists();
 
-            if ($alreadyAssigned) {
-
-                $teacher = Invigilator::find($invigilatorId);
+            if ($busy) {
 
                 return back()->with(
                     'error',
-                    $teacher->name.' is already supervising another exam at the same date and time.'
+                    Invigilator::find($invigilatorId)->name .
+                    ' is already supervising another exam at this time.'
                 );
 
             }
 
         }
-
         $benchCapacity = (int)$request->bench_capacity;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Arrange Students Bench-wise (Department Separation)
+        |--------------------------------------------------------------------------
+        |
+        | We reorder the already interleaved students so that
+        | students sitting on the same bench belong to different
+        | departments whenever possible.
+        |
+        */
+
+        $remainingStudents = $mixedStudents->values();
+
+        $finalStudents = collect();
+
+        while ($remainingStudents->count() > 0) {
+
+            $currentBench = collect();
+
+            while (
+                $currentBench->count() < $benchCapacity &&
+                $remainingStudents->count() > 0
+            ) {
+
+                $selectedIndex = null;
+
+                foreach ($remainingStudents as $index => $candidate) {
+
+                    $canSit = true;
+
+                    foreach ($currentBench as $benchStudent) {
+
+                        if (
+                            $benchStudent['student']->department_id ==
+                            $candidate['student']->department_id
+                        ) {
+                            $canSit = false;
+                            break;
+                        }
+
+                    }
+
+                    if ($canSit) {
+
+                        $selectedIndex = $index;
+                        break;
+
+                    }
+
+                }
+
+                // If no different department exists,
+                // simply take the first remaining student.
+
+                if ($selectedIndex === null) {
+
+                    $selectedIndex = 0;
+
+                }
+
+                $currentBench->push(
+                    $remainingStudents->splice($selectedIndex,1)->first()
+                );
+
+            }
+
+            foreach ($currentBench as $student) {
+
+                $finalStudents->push($student);
+
+            }
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Room Variables
+        |--------------------------------------------------------------------------
+        */
 
         $roomIndex = 0;
 
         $currentRoom = $rooms[$roomIndex];
 
-        $seatInRoom = 0;
-
-        $seatNumber = 1;
+        $currentRoomCapacity = 0;
 
         $row = 1;
 
         $column = 1;
 
-        $benchStudents = [];
+        $seatNumber = 1;
 
-        foreach ($students as $student) {
+        /*
+        |--------------------------------------------------------------------------
+        | Create Bench
+        |--------------------------------------------------------------------------
+        */
+
+        $currentBench = [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Allocate Students
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($finalStudents->values() as $studentData) {
 
             /*
             |--------------------------------------------------------------------------
-            | Room Full
+            | Room Full -> Next Room
             |--------------------------------------------------------------------------
             */
 
-            if ($seatInRoom >= $currentRoom->capacity) {
+            if ($currentRoomCapacity >= $currentRoom->capacity) {
 
                 $roomIndex++;
 
@@ -320,22 +462,73 @@ class SeatAllocationController extends Controller
 
                     return back()->with(
                         'error',
-                        'Not enough room capacity.'
+                        'Selected rooms do not have enough capacity.'
                     );
 
                 }
 
                 $currentRoom = $rooms[$roomIndex];
 
-                $seatInRoom = 0;
-
-                $seatNumber = 1;
+                $currentRoomCapacity = 0;
 
                 $row = 1;
 
                 $column = 1;
 
-                $benchStudents = [];
+                $seatNumber = 1;
+
+                $currentBench = [];
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Bench Anti-Cheating Swap
+            |--------------------------------------------------------------------------
+            */
+
+            if (!empty($currentBench)) {
+
+                foreach ($currentBench as $benchStudent) {
+
+                    if (
+                        $benchStudent['student']->department_id ==
+                        $studentData['student']->department_id
+                    ) {
+
+                        foreach ($finalStudents as $k => $candidate) {
+
+                            $valid = true;
+
+                            foreach ($currentBench as $b) {
+
+                                if (
+                                    $b['student']->department_id ==
+                                    $candidate['student']->department_id
+                                ) {
+                                    $valid = false;
+                                    break;
+                                }
+
+                            }
+
+                            if ($valid) {
+
+                                $temp = $studentData;
+
+                                $studentData = $candidate;
+
+                                $finalStudents[$k] = $temp;
+
+                                break;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
             }
 
             /*
@@ -343,17 +536,16 @@ class SeatAllocationController extends Controller
             | Save Allocation
             |--------------------------------------------------------------------------
             */
-            $invigilatorId = $request->invigilators[$currentRoom->id];
 
             SeatAllocation::create([
 
-                'exam_id' => $exam->id,
+                'exam_id' => $studentData['exam']->id,
 
-                'student_id' => $student->id,
+                'student_id' => $studentData['student']->id,
 
                 'room_id' => $currentRoom->id,
 
-                'invigilator_id' => $invigilatorId,
+                'invigilator_id' => $request->invigilators[$currentRoom->id],
 
                 'seat_number' => $seatNumber,
 
@@ -363,19 +555,31 @@ class SeatAllocationController extends Controller
 
             ]);
 
-            $seatInRoom++;
+            $currentBench[] = $studentData;
 
             $seatNumber++;
 
-            $benchStudents[] = $student;
+            $currentRoomCapacity++;
 
             $column++;
 
-            if (count($benchStudents) == $benchCapacity) {
+            /*
+            |--------------------------------------------------------------------------
+            | Bench Full
+            |--------------------------------------------------------------------------
+            */
 
-                $benchStudents = [];
+            if (count($currentBench) >= $benchCapacity) {
+
+                $currentBench = [];
 
             }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Next Row
+            |--------------------------------------------------------------------------
+            */
 
             if ($column > $benchCapacity) {
 
@@ -384,15 +588,13 @@ class SeatAllocationController extends Controller
                 $row++;
 
             }
-        }
 
+        }
         return redirect()
             ->route('seat-allocations.index')
-            ->with(
-                'success',
-                'Seat allocation generated successfully.'
-            );
+            ->with('success','Seat allocation generated successfully.');
     }
+
 
     /**
      * Student Exam Detail Lookup.
