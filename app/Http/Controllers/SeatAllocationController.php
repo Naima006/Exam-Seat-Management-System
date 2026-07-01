@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SeatAllocation;
 use App\Models\Student;
 use App\Models\Exam;
@@ -116,6 +116,74 @@ class SeatAllocationController extends Controller
         return view(
             'seat_allocations.room_invigilators',
             compact('rooms')
+        );
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $examDate = $request->exam_date;
+        $startTime = $request->start_time;
+
+        if (!$examDate || !$startTime) {
+
+            return redirect()
+                ->route('seat-allocations.index')
+                ->with(
+                    'error',
+                    'Please select an examination session first.'
+                );
+        }
+
+        $allocations = SeatAllocation::with([
+            'student.department',
+            'student.course',
+            'exam.course',
+            'room',
+            'invigilator'
+        ])
+        ->whereHas('exam', function ($query) use ($examDate, $startTime) {
+
+            $query->whereDate('exam_date', $examDate)
+                ->where('start_time', $startTime);
+
+        })
+        ->orderBy('room_id')
+        ->orderBy('seat_number')
+        ->get();
+
+        if ($allocations->isEmpty()) {
+
+            return back()->with(
+                'error',
+                'No seating plan exists for this session.'
+            );
+
+        }
+
+        $rooms = $allocations->groupBy('room.room_no');
+
+        $pdf = Pdf::loadView(
+            'seat_allocations.pdf',
+            [
+                'rooms' => $rooms,
+                'examDate' => $examDate,
+                'startTime' => $startTime,
+                'generatedAt' => now(),
+                'totalStudents' => $allocations->count(),
+                'totalRooms' => $allocations->pluck('room_id')->unique()->count(),
+                'totalInvigilators' => $allocations->pluck('invigilator_id')->unique()->count(),
+                'totalCourses' => $allocations->pluck('exam.course.course_name')->unique()->count(),
+            ]
+        );
+
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->download(
+            'SeatingPlan_' .
+            $examDate .
+            '_' .
+            str_replace(':','-',$startTime) .
+            '.pdf'
         );
     }
 
