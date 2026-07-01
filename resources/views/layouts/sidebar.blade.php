@@ -173,7 +173,8 @@
             </a>
 
             {{-- Reports --}}
-            <a href="#" class="sidebar-link flex items-center gap-3">
+            <a href="{{ route('reports.index') }}"
+   class="sidebar-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
 
                 <div class="p-2 rounded-lg bg-slate-800/50 text-indigo-400 border border-slate-700/30 dynamic-icon-box transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
