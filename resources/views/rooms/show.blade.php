@@ -83,7 +83,7 @@
 
                     <p class="text-slate-400 text-sm">
 
-                        Building
+                        Building no
 
                     </p>
 

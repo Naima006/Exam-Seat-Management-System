@@ -146,7 +146,7 @@
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search Room Number or Building..."
+                    placeholder="Search Room Number or Building no ..."
                     class="input w-full">
 
                 <button
@@ -208,7 +208,7 @@
 
                         <th>Room No</th>
 
-                        <th>Building</th>
+                        <th>Building no</th>
 
                         <th>Capacity</th>
 
