@@ -34,4 +34,12 @@ class Exam extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    /**
+     * Seat Allocations
+     */
+    public function seatAllocations()
+    {
+        return $this->hasMany(SeatAllocation::class);
+    }
 }

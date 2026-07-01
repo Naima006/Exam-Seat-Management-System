@@ -53,32 +53,6 @@
 
         <div class="flex items-center gap-4">
 
-            {{-- Search --}}
-
-            <div class="hidden md:block relative">
-
-                <input
-                    id="globalSearch"
-                    type="text"
-                    placeholder="Search..."
-                    class="input w-72 pl-10">
-
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5 absolute left-3 top-3.5 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/>
-
-                </svg>
-
-            </div>
 
 
             {{-- Theme Toggle --}}

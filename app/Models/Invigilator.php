@@ -39,4 +39,12 @@ class Invigilator extends Model
 
         ];
     }
+
+    /**
+     * Seat Allocations
+     */
+    public function seatAllocations()
+    {
+        return $this->hasMany(SeatAllocation::class);
+    }
 }

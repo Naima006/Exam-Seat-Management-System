@@ -17,4 +17,11 @@ class Room extends Model
         'status',
 
     ];
+    /**
+     * Seat Allocations
+     */
+    public function seatAllocations()
+    {
+        return $this->hasMany(SeatAllocation::class);
+    }
 }
