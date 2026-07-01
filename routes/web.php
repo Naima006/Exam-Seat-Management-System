@@ -11,6 +11,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InvigilatorController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SeatAllocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,5 +189,16 @@ Route::prefix('reports')
     });
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| Seat Allocation Management
+|--------------------------------------------------------------------------
+*/
+
+Route::resource(
+    'seat-allocations',
+    SeatAllocationController::class
+);
 
 require __DIR__.'/auth.php';
