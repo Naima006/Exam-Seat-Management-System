@@ -195,6 +195,15 @@ Route::prefix('reports')
 | Seat Allocation Management
 |--------------------------------------------------------------------------
 */
+Route::get(
+    'seat-allocations/student-lookup',
+    [SeatAllocationController::class, 'studentLookup']
+)->name('seat-allocations.lookup');
+
+Route::get(
+    'seat-allocations/room-invigilators',
+    [SeatAllocationController::class, 'roomInvigilators']
+)->name('seat-allocations.room-invigilators');
 
 Route::resource(
     'seat-allocations',

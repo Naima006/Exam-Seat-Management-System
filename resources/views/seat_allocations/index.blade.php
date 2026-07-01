@@ -6,15 +6,62 @@
 
 <div class="space-y-6">
 
+    {{-- Header --}}
+    <div class="card p-6">
+
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+            <div>
+
+                <h1 class="text-3xl font-bold">
+                    Seat Allocations
+                </h1>
+
+                <p class="text-slate-400 mt-2">
+                    Generate and manage examination seat allocations.
+                </p>
+
+            </div>
+
+            <div class="flex gap-3">
+
+                <a
+                    href="{{ route('seat-allocations.lookup') }}"
+                    class="btn btn-outline">
+
+                    Student Lookup
+
+                </a>
+
+                <a
+                    href="{{ route('seat-allocations.room-invigilators') }}"
+                    class="btn btn-outline">
+
+                    Room Invigilators
+
+                </a>
+
+                <a
+                    href="{{ route('seat-allocations.create') }}"
+                    class="btn btn-primary">
+
+                    Generate Seating
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
     {{-- Statistics --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <div class="card stat-card">
 
             <p class="stat-title">
-
                 Total Allocations
-
             </p>
 
             <h2 class="stat-value">
@@ -28,14 +75,12 @@
         <div class="card stat-card">
 
             <p class="stat-title">
-
-                Rooms Used
-
+                Total Rooms Used
             </p>
 
             <h2 class="stat-value">
 
-                {{ $totalRoomsUsed }}
+                {{ $totalRooms }}
 
             </h2>
 
@@ -44,9 +89,7 @@
         <div class="card stat-card">
 
             <p class="stat-title">
-
-                Invigilators Assigned
-
+                Total Invigilators Assigned
             </p>
 
             <h2 class="stat-value">
@@ -59,133 +102,59 @@
 
     </div>
 
-    {{-- Toolbar --}}
-    <div class="card p-6">
+    {{-- Search --}}
+    <div class="card p-5">
 
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <form
+            method="GET"
+            action="{{ route('seat-allocations.index') }}">
 
-            <div>
+            <div class="flex flex-col md:flex-row gap-4">
 
-                <h2 class="text-2xl font-bold">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Search by Student ID or Student Name..."
+                    class="input flex-1">
 
-                    Seat Allocation Management
+                <div class="flex gap-3">
 
-                </h2>
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
 
-                <p class="text-slate-400 mt-1">
+                        Search
 
-                    Generate seating plans and manage exam seating assignments.
+                    </button>
 
-                </p>
+                    @if(request()->filled('search'))
 
-            </div>
+                        <a
+                            href="{{ route('seat-allocations.index') }}"
+                            class="btn btn-outline">
 
-            <div class="flex flex-wrap gap-3">
+                            Reset
 
-                {{-- Search --}}
-                <div class="relative">
+                        </a>
 
-                    <input
-                        id="tableSearch"
-                        type="text"
-                        placeholder="Search Student / Room / Invigilator..."
-                        class="input w-80 pl-10">
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="absolute left-3 top-3.5 w-5 h-5 text-slate-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/>
-
-                    </svg>
+                    @endif
 
                 </div>
 
-                {{-- Generate Button --}}
-                <a
-                    href="#"
-                    class="btn btn-primary">
-
-                    Generate Seating Plan
-
-                </a>
-
-                {{-- Lookup Button --}}
-                <a
-                    href="#"
-                    class="btn btn-outline">
-
-                    Student Lookup
-
-                </a>
-
             </div>
 
-        </div>
+        </form>
 
     </div>
 
     {{-- Table --}}
     <div class="card overflow-hidden">
 
-        <div
-            id="tableContainer">
-
-            @include('seat_allocations.partials.table')
-
-        </div>
+        @include('seat_allocations.partials.table')
 
     </div>
 
 </div>
 
 @endsection
-
-@push('scripts')
-
-<script>
-
-let timer;
-
-const input = document.getElementById('tableSearch');
-
-input?.addEventListener('keyup', function(){
-
-    clearTimeout(timer);
-
-    timer = setTimeout(function(){
-
-        fetch(
-            "{{ route('seat-allocations.index') }}?search=" +
-            encodeURIComponent(input.value),
-
-            {
-                headers:{
-                    'X-Requested-With':'XMLHttpRequest'
-                }
-            }
-
-        )
-
-        .then(response => response.text())
-
-        .then(html => {
-
-            document.getElementById('tableContainer').innerHTML = html;
-
-        });
-
-    },300);
-
-});
-
-</script>
-
-@endpush
